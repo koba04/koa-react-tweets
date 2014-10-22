@@ -1,0 +1,34 @@
+{
+  "name": "koa-react-tweets",
+  "version": "0.1.0",
+  "description": "Tweeter stream sample by koa + React.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koba04/koa-react-tweets.git"
+  },
+  "keywords": [
+    "koa",
+    "react",
+    "twitter"
+  ],
+  "author": "koba04",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koba04/koa-react-tweets/issues"
+  },
+  "homepage": "https://github.com/koba04/koa-react-tweets",
+  "dependencies": {
+    "koa": "^0.13.0",
+    "koa-handlebars": "^0.3.1",
+    "koa-router": "^3.4.0",
+    "mongoose": "^3.8.17",
+    "node-jsx": "^0.11.0",
+    "ntwitter": "^0.5.0",
+    "react": "^0.12.0-rc1",
+    "socket.io": "^1.1.0"
+  }
+}
