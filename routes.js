@@ -5,9 +5,12 @@ var JSX = require('node-jsx').install({ harmony: true }),
 
 module.exports = {
   index: function* () {
+    var state = {
+      key: "</script><script>alert(1)</script>"
+    };
     yield this.render("index", {
       markup: React.renderToString(React.createElement(TweetsApp)),
-      state: "{}"
+      state: JSON.stringify(state).replace(/<\//g, '<\\/')
     });
   },
   page: function* () {
