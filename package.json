@@ -4,7 +4,10 @@
   "description": "Tweeter stream sample by koa + React.js",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "watchify app.js -o public/js/bundle.js -v",
+    "browserify": "browserify app.js > public/js/bundle.js",
+    "build": "npm run browserify ",
+    "start": "npm run watch & nodemon --harmony server.js"
   },
   "repository": {
     "type": "git",
@@ -25,10 +28,27 @@
     "koa": "^0.13.0",
     "koa-handlebars": "^0.3.1",
     "koa-router": "^3.4.0",
+    "koa-static": "^1.4.7",
     "mongoose": "^3.8.17",
-    "node-jsx": "^0.11.0",
+    "node-jsx": "koba04/node-jsx#fix-react-tools-version",
     "ntwitter": "^0.5.0",
     "react": "^0.12.0-rc1",
     "socket.io": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^6.1.0",
+    "nodemon": "^1.2.1",
+    "reactify": "andreypopp/reactify",
+    "watchify": "^2.0.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "harmony": true
+        }
+      ]
+    ]
   }
 }
