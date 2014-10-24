@@ -10,7 +10,7 @@ module.exports = {
     };
     yield this.render("index", {
       markup: React.renderToString(React.createElement(TweetsApp)),
-      state: JSON.stringify(state).replace(/<\//g, '<\\/')
+      state: JSON.stringify(state)
     });
   },
   page: function* () {
