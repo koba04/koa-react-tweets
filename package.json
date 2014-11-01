@@ -30,15 +30,15 @@
     "koa-router": "^3.4.0",
     "koa-static": "^1.4.7",
     "mongoose": "^3.8.17",
-    "node-jsx": "koba04/node-jsx#fix-react-tools-version",
+    "node-jsx": "^0.12.0",
     "ntwitter": "^0.5.0",
-    "react": "^0.12.0-rc1",
+    "react": "^0.12.0",
     "socket.io": "^1.1.0"
   },
   "devDependencies": {
     "browserify": "^6.1.0",
     "nodemon": "^1.2.1",
-    "reactify": "andreypopp/reactify",
+    "reactify": "^0.15.2",
     "watchify": "^2.0.0"
   },
   "browserify": {

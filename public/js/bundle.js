@@ -4151,7 +4151,7 @@ var React = {
   renderToString: ReactServerRendering.renderToString,
   renderToStaticMarkup: ReactServerRendering.renderToStaticMarkup,
   unmountComponentAtNode: ReactMount.unmountComponentAtNode,
-  isValidClass: ReactLegacyElement.isValidFactory,
+  isValidClass: ReactLegacyElement.isValidClass,
   isValidElement: ReactElement.isValidElement,
   withContext: ReactContext.withContext,
 
@@ -4253,7 +4253,7 @@ if ("production" !== process.env.NODE_ENV) {
 
 // Version exists only in the open-source version of React, not in Facebook's
 // internal version.
-React.version = '0.12.0-rc1';
+React.version = '0.12.0';
 
 module.exports = React;
 
@@ -9448,7 +9448,7 @@ function defineMutationMembrane(prototype) {
  * @param {*} type
  * @param {string|object} ref
  * @param {*} key
- * @params {*} props
+ * @param {*} props
  * @internal
  */
 var ReactElement = function(type, key, ref, owner, context, props) {
@@ -9483,11 +9483,15 @@ var ReactElement = function(type, key, ref, owner, context, props) {
   this.props = props;
 };
 
+// We intentionally don't expose the function on the constructor property.
+// ReactElement should be indistinguishable from a plain object.
+ReactElement.prototype = {
+  _isReactElement: true
+};
+
 if ("production" !== process.env.NODE_ENV) {
   defineMutationMembrane(ReactElement.prototype);
 }
-
-ReactElement.prototype._isReactElement = true;
 
 ReactElement.createElement = function(type, config, children) {
   var propName;
@@ -9500,7 +9504,16 @@ ReactElement.createElement = function(type, config, children) {
 
   if (config != null) {
     ref = config.ref === undefined ? null : config.ref;
-    key = config.key === undefined ? null : '' + config.key;
+    if ("production" !== process.env.NODE_ENV) {
+      ("production" !== process.env.NODE_ENV ? warning(
+        config.key !== null,
+        'createElement(...): Encountered component with a `key` of null. In ' +
+        'a future version, this will be treated as equivalent to the string ' +
+        '\'null\'; instead, provide an explicit key or use undefined.'
+      ) : null);
+    }
+    // TODO: Change this back to `config.key === undefined`
+    key = config.key == null ? null : '' + config.key;
     // Remaining properties are added to a new props object
     for (propName in config) {
       if (config.hasOwnProperty(propName) &&
@@ -10792,7 +10805,7 @@ function warnForNonLegacyFactory(type) {
   ("production" !== process.env.NODE_ENV ? warning(
     false,
     'Do not pass React.DOM.' + type.type + ' to JSX or createFactory. ' +
-    'Use the string "' + type + '" instead.'
+    'Use the string "' + type.type + '" instead.'
   ) : null);
 }
 
@@ -10943,6 +10956,17 @@ ReactLegacyElementFactory.isValidFactory = function(factory) {
   // TODO: This will be removed and moved into a class validator or something.
   return typeof factory === 'function' &&
     factory.isReactLegacyFactory === LEGACY_MARKER;
+};
+
+ReactLegacyElementFactory.isValidClass = function(factory) {
+  if ("production" !== process.env.NODE_ENV) {
+    ("production" !== process.env.NODE_ENV ? warning(
+      false,
+      'isValidClass is deprecated and will be removed in a future release. ' +
+      'Use a more specific validator instead.'
+    ) : null);
+  }
+  return ReactLegacyElementFactory.isValidFactory(factory);
 };
 
 ReactLegacyElementFactory._isLegacyCallWarningEnabled = true;
